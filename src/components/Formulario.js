@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 
 const Campo = styled.div`
-  display:flex;
-  margin-bottom:1rem;
-  align-items:center;
+  display: flex;
+  margin-bottom: 1rem;
+  align-items: center;
 `;
 
 const Label = styled.label`
@@ -12,11 +12,11 @@ const Label = styled.label`
 `;
 
 const Select = styled.select`
-  display:block;
-  width:100%;
-  padding:1rem;
-  border:1px solid #e1e1e1;
-  -webkit-appearance:none;
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #e1e1e1;
+  -webkit-appearance: none;
 `;
 
 const InputRadio = styled.input`
@@ -25,28 +25,44 @@ const InputRadio = styled.input`
 
 const Boton = styled.button`
   background-color: #00838f;
-  font-size:16px;
-  width:100%;
-  padding:1rem;
-  color:#fff;
-  text-transform:uppercase;
-  font-weight:bold;
-  border:none;
-  transition:background-color .3s ease;
-  margin-top:2rem;
+  font-size: 16px;
+  width: 100%;
+  padding: 1rem;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+  border: none;
+  transition: background-color 0.3s ease;
+  margin-top: 2rem;
 
-  &:hover{
-    background-color:#26c6da;
-    cursor:pointer;
+  &:hover {
+    background-color: #26c6da;
+    cursor: pointer;
   }
 `;
 
 const Formulario = () => {
+  const [datos, guardarDatos] = useState({
+    marca: "",
+    year: "",
+    plan: "",
+  });
+
+  //extraemos los valores del state
+
+  const { marca, year, plan } = datos;
+
+  //leer los datos del formulario y añadirlos al state
+
+  const guardarInformacion = (e) => {
+    guardarDatos({ ...datos, [e.target.name]: e.target.value });
+  };
+
   return (
     <form>
       <Campo>
         <Label>Marca</Label>
-        <Select>
+        <Select name="marca" value={marca} onChange={guardarInformacion}>
           <option value="">-- Seleccione --</option>
           <option value="americano">Americano</option>
           <option value="europeo">Europeo</option>
@@ -55,7 +71,7 @@ const Formulario = () => {
       </Campo>
       <Campo>
         <Label>Año</Label>
-        <Select>
+        <Select name="year" value={year} onChange={guardarInformacion}>
           <option value="">-- Seleccione --</option>
           <option value="2021">2021</option>
           <option value="2020">2020</option>
@@ -75,12 +91,18 @@ const Formulario = () => {
           type="radio"
           name="plan"
           value="basico"
-        />Básico
+          checked={plan === "basico"}
+          onChange={guardarInformacion}
+        />
+        Básico
         <InputRadio
           type="radio"
           name="plan"
           value="completo"
-        />Completo
+          checked={plan === "completo"}
+          onChange={guardarInformacion}
+        />
+        Completo
       </Campo>
       <Boton type="button">Cotizar</Boton>
     </form>
